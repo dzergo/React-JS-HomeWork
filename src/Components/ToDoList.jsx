@@ -6,7 +6,16 @@ class ToDoList extends React.Component {
         
         return (
             <section className="main">
-            {this.props.todos.length ? <input id="toggle-all" className="toggle-all" type="checkbox" checked={this.props.todos.every(i=>i.completed)} onChange={this.props.toggleAllToDo} /> : null}
+            {
+                this.props.todos.length ? 
+                    <input 
+                        id="toggle-all" 
+                        className="toggle-all" 
+                        type="checkbox" 
+                        checked={this.props.todos.every(i=>i.completed)} 
+                        onChange={this.props.toggleAllToDo} 
+                    /> : null
+            }
             <label htmlFor="toggle-all" ></label>
             <ul className="todo-list" >
                 {
@@ -22,7 +31,12 @@ class ToDoList extends React.Component {
                         }
                     }).map(
                         item =>
-                            <ToDoItem key={item.id} item={item} toggleToDo={this.props.toggleToDo} removeToDo={this.props.removeToDo}/>                        
+                            <ToDoItem 
+                                key={item.id} 
+                                item={item} 
+                                toggleToDo={this.props.toggleToDo} 
+                                removeToDo={this.props.removeToDo}
+                            />                        
                         )
                 }
             </ul>

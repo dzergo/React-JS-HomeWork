@@ -30,6 +30,7 @@ class App extends React.Component {
   }
 
   createToDo = (title) => {
+    title = title.trim();
     if(title !== '') {
     this.setState({
       todos: [
@@ -49,13 +50,8 @@ class App extends React.Component {
   // Toggle All Functional
 
   //Function to count Active Notes
-  countActive = (countActive) => {
-    countActive = 0;
-
-    this.state.todos.forEach(function (item) {
-      if(item.completed === false) countActive++
-    })
-    return countActive;
+  countActive = () => {
+    return this.state.todos.filter(e => e.completed === false).length;
   }
 
   //Function to toggle All Notes
@@ -63,13 +59,13 @@ class App extends React.Component {
     
     if(this.countActive() > 0) {
       this.setState({
-        todos: this.state.todos.map( item => item.completed === false ? {...item, completed: true} : item)
+        todos: this.state.todos.map( item => !item.completed ? {...item, completed: true} : item)
       })
     }
 
     else {
       this.setState({
-        todos: this.state.todos.map( item => item.completed === true ? {...item, completed: false} : item)
+        todos: this.state.todos.map( item => !item.completed ? item : {...item, completed: false})
       })
     }
   }
@@ -89,9 +85,9 @@ class App extends React.Component {
     })
   }
 
-  changeFilter = (a) => {
+  changeFilter = (filterFlag) => {
     this.setState({
-      filter: a
+      filter: filterFlag
     })
   }
 
@@ -111,8 +107,20 @@ class App extends React.Component {
 
         {/* INPUT Notes*/}
         <Header createToDo={this.createToDo}/>
-        <ToDoList todos={this.state.todos} toggleToDo={this.toggleToDo} removeToDo={this.removeToDo} toggleAllToDo={this.toggleAllToDo} filter={this.state.filter} />
-        {this.state.todos.length ? <Footer todos={this.state.todos} filter={this.state.filter} countCompletedToDo={this.countActiveToDo} clearCompletedToDo={this.clearCompletedToDo} changeFilter={this.changeFilter}/> : null}
+        <ToDoList 
+          todos={this.state.todos} 
+          toggleToDo={this.toggleToDo} 
+          removeToDo={this.removeToDo} 
+          toggleAllToDo={this.toggleAllToDo} 
+          filter={this.state.filter} 
+        />
+        {!!this.state.todos.length && 
+          <Footer 
+            todos={this.state.todos} 
+            filter={this.state.filter} 
+            clearCompletedToDo={this.clearCompletedToDo} 
+            changeFilter={this.changeFilter}
+          />}
       </section>
     );
   }
